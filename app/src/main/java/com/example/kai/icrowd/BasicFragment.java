@@ -231,7 +231,7 @@ public class BasicFragment  extends Fragment
             super.handleMessage( msg );
             switch(msg.what){
                 case 11:
-                    Log.i( "TEST","?????ssss" );
+                    Log.i( "TEST","Go to CheckPos" );
                     new Thread(new Runnable(){
 
                         @Override
