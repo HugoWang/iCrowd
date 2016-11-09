@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,7 +46,7 @@ public class CheckPos extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_check_pos );
 
-        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+       mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -79,18 +81,15 @@ public class CheckPos extends AppCompatActivity {
                     if(checkPic.exists())
                     {
                         Log.i( "TEST","Display?" );
-//                        LinearLayout Layout = new LinearLayout(getApplicationContext());
-//                        setContentView(Layout);
-//                        Layout.setOrientation(LinearLayout.VERTICAL);
+
 
                         Bitmap myBitmap = BitmapUtils.decodeSampledBitmapFromResource( checkPic.toString(), width, height );
-//                        ImageView show_Image = new ImageView( getApplicationContext() );
                         ImageView show_Image = (ImageView)findViewById( R.id.show_image );
                         show_Image.setImageBitmap(myBitmap);
                         mProgressBar.setVisibility( View.GONE);
                         getSupportActionBar().setTitle("Lable Objects");
-//                        Layout.addView( show_Image );
                         Log.i( "TEST","Display!" );
+
                     }
                     try {
                         Toast.makeText( getApplication(), "Position: "+ getPos.getString( "position" ).toString(),Toast.LENGTH_LONG).show();
@@ -104,6 +103,7 @@ public class CheckPos extends AppCompatActivity {
                     super.onFailure(statusCode, headers, throwable, object);
                     Log.i("TEST", "statusCode:"+statusCode);
                     try {
+                        /*
                         LinearLayout linearLayout = new LinearLayout(getApplicationContext());
                         setContentView(linearLayout);
                         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -133,8 +133,14 @@ public class CheckPos extends AppCompatActivity {
                                 startActivity(mainIntent);
                             }
                         }, 4000);
+                        */
 
-                        //Toast.makeText( getApplication(), "Code: "+statusCode+"; "+"Message: "+ object.getString("message"),Toast.LENGTH_LONG).show();
+                        Bitmap myBitmap = BitmapUtils.decodeSampledBitmapFromResource( checkPic.toString(), width, height );
+                        ImageView show_Image = (ImageView)findViewById( R.id.show_image );
+                        show_Image.setImageBitmap(myBitmap);
+                        mProgressBar.setVisibility( View.GONE);
+                        getSupportActionBar().setTitle("Lable Objects");
+
                         Log.i("TEST", "message:" + object.getString("message"));
                         Log.i("TEST", "header:" + headers.toString());
 
