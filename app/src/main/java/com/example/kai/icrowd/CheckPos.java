@@ -141,6 +141,8 @@ public class CheckPos extends AppCompatActivity {
                         mProgressBar.setVisibility( View.GONE);
                         getSupportActionBar().setTitle("Lable Objects");
 
+                        Toast.makeText( getApplication(), "Status: "+statusCode+"; "+"Message: "+ object.getString("message"),Toast.LENGTH_LONG).show();
+
                         Log.i("TEST", "message:" + object.getString("message"));
                         Log.i("TEST", "header:" + headers.toString());
 

@@ -35,7 +35,7 @@ public class GestureRelativeLayout extends RelativeLayout {
     private Paint mPointPaint;
 
     private String objects[];
-    private int i = 0;
+    private int isDraw = 0;
 
     private ArrayList<Rect> rectangles = new ArrayList<Rect>();
     
@@ -77,35 +77,41 @@ public class GestureRelativeLayout extends RelativeLayout {
                 endX = event.getX();
                 endY = event.getY();
 
-                if((startX != endX) && (startY != endY)){
-                    rectangles.add(new Rect((int)startX, (int)startY, (int)endX, (int)endY));
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    final EditText edittext = new EditText(context);
-                    alert.setTitle("What is this?");
-                    alert.setMessage( "Please lable the object." );
-                    alert.setView(edittext);
+                if(isDraw == 1){
+                    if((startX != endX) && (startY != endY)){
+                        rectangles.add(new Rect((int)startX, (int)startY, (int)endX, (int)endY));
+                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                        final EditText edittext = new EditText(context);
+                        alert.setTitle("What is this?");
+                        alert.setMessage( "Please lable the object." );
+                        alert.setView(edittext);
 
-                    alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
+                        alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
 
-                            String lableObj = edittext.getText().toString();
-                            Log.i("TEST", "objects:"+lableObj);
-                        }
-                    });
+                                String lableObj = edittext.getText().toString();
+                                Log.i("TEST", "objects:"+lableObj);
+                            }
+                        });
 
-                    alert.show();
+                        alert.show();
+                        isDraw = 0;
+                    }
 
                 }
 
-                m_handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isDown) {
-                            isDown = false;
-                            invalidate();
-                        }
-                    }
-                }, 500);
+                isDown = false;
+                invalidate();
+
+//                m_handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (isDown) {
+//
+//                            invalidate();
+//                        }
+//                    }
+//                }, 500);
                 break;
         }
         return true;
@@ -121,5 +127,6 @@ public class GestureRelativeLayout extends RelativeLayout {
         }
         Log.i("TEST",rectangles.toString());
 
+        isDraw = 1;
     }
 }
