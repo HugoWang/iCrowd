@@ -30,11 +30,10 @@ public class GestureRelativeLayout extends RelativeLayout {
     private float startX, endX = 0;
     private float startY, endY = 0;
 
-    private boolean isDown;//判断是否按下
     private Context context;
     private Paint mPointPaint;
 
-    private String objects[];
+    private ArrayList<String> lableObj = new ArrayList<String>();
     private int isDraw = 0;
 
     private ArrayList<Rect> rectangles = new ArrayList<Rect>();
@@ -51,7 +50,6 @@ public class GestureRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyle);
         this.context = context;
         setWillNotDraw(false);
-        isDown = false;
 
         mPointPaint = new Paint();
         mPointPaint.setStyle(Paint.Style.STROKE);
@@ -60,8 +58,6 @@ public class GestureRelativeLayout extends RelativeLayout {
         mPointPaint.setAntiAlias(true);
     }
 
-    Handler m_handler = new Handler();
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -69,7 +65,7 @@ public class GestureRelativeLayout extends RelativeLayout {
             case MotionEvent.ACTION_DOWN:
                 startX = event.getX();
                 startY = event.getY();
-                isDown = true;
+
                 Log.i("TEST","X:"+startX+"");
                 Log.i("TEST","Y:"+startY+"");
                 break;
@@ -77,45 +73,40 @@ public class GestureRelativeLayout extends RelativeLayout {
                 endX = event.getX();
                 endY = event.getY();
 
+                invalidate();
+
                 if(isDraw == 1){
                     if((startX != endX) && (startY != endY)){
-                        rectangles.add(new Rect((int)startX, (int)startY, (int)endX, (int)endY));
-                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                        final EditText edittext = new EditText(context);
-                        alert.setTitle("What is this?");
-                        alert.setMessage( "Please lable the object." );
-                        alert.setView(edittext);
-
-                        alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                                String lableObj = edittext.getText().toString();
-                                Log.i("TEST", "objects:"+lableObj);
-                            }
-                        });
-
-                        alert.show();
-                        isDraw = 0;
+                        showLable();
                     }
 
                 }
 
-                isDown = false;
-                invalidate();
-
-//                m_handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (isDown) {
-//
-//                            invalidate();
-//                        }
-//                    }
-//                }, 500);
                 break;
         }
         return true;
     }
+
+    private void showLable() {
+        rectangles.add(new Rect((int)startX, (int)startY, (int)endX, (int)endY));
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        final EditText edittext = new EditText(context);
+        alert.setTitle("What is this?");
+        alert.setMessage( "Please lable the object." );
+        alert.setView(edittext);
+
+        alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                lableObj.add(edittext.getText().toString());
+                Log.i("TEST", "objects:"+lableObj);
+            }
+        });
+
+        alert.show();
+        isDraw = 0;
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -125,8 +116,14 @@ public class GestureRelativeLayout extends RelativeLayout {
         for (Rect rect : rectangles) {
             canvas.drawRect(rect, mPointPaint);
         }
-        Log.i("TEST",rectangles.toString());
+        Log.i("TEST","coordinates:"+rectangles.toString());
 
         isDraw = 1;
+
+//        mHandler.postDelayed(new Runnable() {
+//            public void run() {
+//
+//            }
+//        }, 2000);
     }
 }
