@@ -244,6 +244,7 @@ public class BasicFragment  extends Fragment
 //                            }
                             Intent toCheck = new Intent(getActivity(), CheckPos.class);
                             startActivity(toCheck);
+                            getActivity().overridePendingTransition(0, 0);
                         }
                     }).start();
                     break;
@@ -948,7 +949,7 @@ public class BasicFragment  extends Fragment
             e.printStackTrace();
         }
         try{
-            client.post("http://saimaa.netlab.hut.fi:5004/location/fine", params, new JsonHttpResponseHandler(){
+            client.post("http://crowdsensing.cs.hut.fi:5004/location/fine", params, new JsonHttpResponseHandler(){
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {

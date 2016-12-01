@@ -3,26 +3,24 @@ package com.example.kai.icrowd;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import android.graphics.Color;
 import android.graphics.Point;
+
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
+
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +48,12 @@ public class CheckPos extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_check_pos );
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar myActionBar=getSupportActionBar();
+        if (myActionBar != null) {
+            myActionBar.hide();
+        }
 
-       mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -79,8 +79,9 @@ public class CheckPos extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        //"http://saimaa.netlab.hut.fi:5004/location/fine"
         try{
-            client.post("http://saimaa.netlab.hut.fi:5004/location/fine", params, new JsonHttpResponseHandler(){
+            client.post("http://crowdsensing.cs.hut.fi:5004/location/fine", params, new JsonHttpResponseHandler(){
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject getPos) {
@@ -142,11 +143,47 @@ public class CheckPos extends AppCompatActivity {
                         }, 4000);
                         */
 
-                        Bitmap myBitmap = BitmapUtils.decodeSampledBitmapFromResource( checkPic.toString(), width, height );
-                        ImageView show_Image = (ImageView)findViewById( R.id.show_image );
-                        show_Image.setImageBitmap(myBitmap);
+
+                        //Display image
+//                        Bitmap myBitmap = BitmapUtils.decodeSampledBitmapFromResource( checkPic.toString(), width, height );
+//                        ImageView show_Image = (ImageView)findViewById( R.id.show_image );
+//                        show_Image.setImageBitmap(myBitmap);
+
+
                         mProgressBar.setVisibility( View.GONE);
-                        getSupportActionBar().setTitle("Lable Objects");
+
+                        LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+                        setContentView(linearLayout);
+                        linearLayout.setOrientation(LinearLayout.VERTICAL);
+                        linearLayout.setGravity( Gravity.CENTER );
+                        linearLayout.setBackgroundColor( Color.GREEN );
+
+                        TextView tipView = new TextView(getApplicationContext());
+                        tipView.setText("Congratulations! You found the correct location!");
+                        tipView.setTextColor( Color.WHITE);
+                        tipView.setTextSize( 30 );
+                        tipView.setPadding( 5, 5, 5, 5 );
+                        tipView.setGravity( Gravity.CENTER_HORIZONTAL );
+                        //Typeface tf = Typeface.createFromAsset(getAssets(),"symbol.ttf");
+                        //tipView.setTypeface( tf );
+
+                        ImageView cryView = new ImageView( getApplicationContext() );
+                        cryView.setImageResource(R.drawable.happy);
+
+                        linearLayout.addView( cryView );
+                        linearLayout.addView(tipView);
+                        mProgressBar.setVisibility( View.GONE);
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent mainIntent = new Intent(CheckPos.this, HomeActivity.class);
+                                startActivity(mainIntent);
+                            }
+                        }, 4000);
+
+                        //Change lable
+                        //getSupportActionBar().setTitle("Lable Objects");
 
                         Toast.makeText( getApplication(), "Status: "+statusCode+"; "+"Message: "+ object.getString("message"),Toast.LENGTH_LONG).show();
 
@@ -164,21 +201,4 @@ public class CheckPos extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actions, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_clear) {
-
-            Toast.makeText(this,"clear",Toast.LENGTH_SHORT).show();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
