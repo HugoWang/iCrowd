@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.FloatingActionButton
+            android:id="@+id/submit"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:layout_anchorGravity="bottom|center"
+            app:backgroundTint="@color/myBlue"
+            app:rippleColor="#FFF"
+            app:layout_anchor="@+id/texture"
+            android:src="@drawable/send"
+            android:layout_marginRight="24dp"
+            android:layout_centerHorizontal="true" />
+
+            <com.example.kai.icrowd.NewTextureView
+                android:id="@+id/texture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+
+            <com.example.kai.icrowd.GestureRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>
+

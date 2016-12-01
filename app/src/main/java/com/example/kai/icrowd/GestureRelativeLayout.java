@@ -54,7 +54,7 @@ public class GestureRelativeLayout extends RelativeLayout {
         mPointPaint = new Paint();
         mPointPaint.setStyle(Paint.Style.STROKE);
         mPointPaint.setStrokeWidth( 8 );
-        mPointPaint.setColor( Color.RED );
+        mPointPaint.setColor( Color.YELLOW );
         mPointPaint.setAntiAlias(true);
     }
 

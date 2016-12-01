@@ -30,10 +30,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
 
-            <com.example.kai.icrowd.GestureRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
         </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

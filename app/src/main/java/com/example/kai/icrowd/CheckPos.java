@@ -9,6 +9,7 @@ import android.graphics.Point;
 
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -156,36 +157,38 @@ public class CheckPos extends AppCompatActivity {
                         setContentView(linearLayout);
                         linearLayout.setOrientation(LinearLayout.VERTICAL);
                         linearLayout.setGravity( Gravity.CENTER );
-                        linearLayout.setBackgroundColor( Color.GREEN );
+                        linearLayout.setBackgroundColor( Color.BLACK);
 
                         TextView tipView = new TextView(getApplicationContext());
-                        tipView.setText("Congratulations! You found the correct location!");
-                        tipView.setTextColor( Color.WHITE);
+                        tipView.setText("Congratulations!\n"+ "You found the correct location!");
+                       // tipView.setTextColor( ContextCompat.getColor(getApplicationContext(), R.color.myGreen));
+                        tipView.setTextColor(Color.WHITE);
                         tipView.setTextSize( 30 );
                         tipView.setPadding( 5, 5, 5, 5 );
                         tipView.setGravity( Gravity.CENTER_HORIZONTAL );
-                        //Typeface tf = Typeface.createFromAsset(getAssets(),"symbol.ttf");
+                        //Typeface tf = Typeface.createFromAsset(getAssets(),"RobotoCondensed-Regular.ttf");
                         //tipView.setTypeface( tf );
 
-                        ImageView cryView = new ImageView( getApplicationContext() );
-                        cryView.setImageResource(R.drawable.happy);
+                        ImageView happyView = new ImageView( getApplicationContext() );
+                        happyView.setImageResource(R.drawable.happy);
+                        linearLayout.addView( happyView );
 
-                        linearLayout.addView( cryView );
                         linearLayout.addView(tipView);
                         mProgressBar.setVisibility( View.GONE);
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent mainIntent = new Intent(CheckPos.this, HomeActivity.class);
-                                startActivity(mainIntent);
+                                Intent lableIntent = new Intent(CheckPos.this, LableActivity.class);
+                                startActivity(lableIntent);
+                                overridePendingTransition(0, 0);
                             }
-                        }, 4000);
+                        }, 3000);
 
                         //Change lable
                         //getSupportActionBar().setTitle("Lable Objects");
 
-                        Toast.makeText( getApplication(), "Status: "+statusCode+"; "+"Message: "+ object.getString("message"),Toast.LENGTH_LONG).show();
+                        //Toast.makeText( getApplication(), "Status: "+statusCode+"; "+"Message: "+ object.getString("message"),Toast.LENGTH_LONG).show();
 
                         Log.i("TEST", "message:" + object.getString("message"));
                         Log.i("TEST", "header:" + headers.toString());
